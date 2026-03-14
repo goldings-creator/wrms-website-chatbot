@@ -48,6 +48,38 @@ export default function App() {
     {
       keywords: ['bus', 'transportation', 'route'],
       answer: "For bus route information or transportation delays, please contact the District Transportation Office at (555) 010-2005."
+    },
+    {
+      keywords: ['principal', 'administration', 'admin', 'director'],
+      answer: "The principal of West Rocks Middle School is available by appointment. Please call the main office at (555) 010-2000 to schedule a meeting."
+    },
+    {
+      keywords: ['dress code', 'clothes', 'wear', 'uniform', 'dress'],
+      answer: "Students are expected to dress appropriately for a learning environment. Hats and hoods must be removed inside the building. Please refer to page 12 of the Student Handbook for full details."
+    },
+    {
+      keywords: ['cell phone', 'phone', 'phones', 'smart phone', 'device'],
+      answer: "Cell phones are not allowed to be used in school. They must be kept in the student's locker when they enter the school and remain there until dismissal. If used during the day, cell phones will be confiscated by staff."
+    },
+    {
+      keywords: ['chromebook', 'laptop', 'computer', 'repair', 'broken screen', 'charger', 'damage'],
+      answer: "Students must bring their Chromebook fully charged every day. Families are responsible for damages. Repair costs are: Screen $65, Keyboard $45, Charger $15, and Full Replacement $350."
+    },
+    {
+      keywords: ['doordash', 'uber eats', 'food delivery', 'drop off food', 'visitor', 'visit'],
+      answer: "For safety reasons, food delivery services are not allowed during the school day. If a family needs to drop off lunch, please come to the main entrance. All visitors must obtain a Visitor's ID badge at the security desk."
+    },
+    {
+      keywords: ['early dismissal', 'leave early', 'pick up early', 'appointment'],
+      answer: "All requests for early dismissal must be made in the morning during homeroom with a written note. For student safety, the strict deadline for requesting an early dismissal is 2:30 PM."
+    },
+    {
+      keywords: ['grades', 'report card', 'powerschool', 'gpa', 'honor roll'],
+      answer: "Grades and attendance can be accessed through the PowerSchool Student and Parent Portal. Report cards are posted online at the end of each quarter (November, February, April, and June)."
+    },
+    {
+      keywords: ['bullying', 'harassment', 'report'],
+      answer: "All potential and alleged bullying should be reported to an NPS staff member. They will provide the student or family with the official NPS Bullying Complaint Form so an investigation can begin."
     }
   ];
 
