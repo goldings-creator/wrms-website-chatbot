@@ -892,7 +892,7 @@ _________________________ ______________ ________ Student Signature Homeroom/Gra
     Please note: The text above was extracted directly from a PDF, so the formatting is very messy. Tables, schedules, and calendars are broken into raw text, and some words may be squished together. Please read carefully and use your reasoning to piece together the answer from the messy data.
     
     If you can reasonably infer the answer from the text, provide a clear, concise, and polite response.
-    If the answer is truly NOT anywhere in the text, you MUST reply exactly with: "I couldn't find information about that in my current handbook. Please contact the main office directly at (555) 010-2000 or frontdesk@westrocks.edu for assistance."
+    If the answer is truly NOT anywhere in the text, you MUST reply exactly with: "Sorry, I cannot answer your question. Please call our Main Office at 203-899-2970."
     
     USER QUESTION: 
     ${userText}`;
