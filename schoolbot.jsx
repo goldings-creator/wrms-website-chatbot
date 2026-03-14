@@ -879,15 +879,22 @@ _________________________ ______________ ________ Student Signature Homeroom/Gra
       return "System Error: Please add your free Google Gemini API key to the code to activate my AI brain!";
     }
 
-    const prompt = `You are the friendly, helpful assistant for West Rocks Middle School. 
-    Only answer the user's question based on the following handbook text. 
-    If the answer is not in the text, say: "I couldn't find information about that in my current handbook. Please contact the main office directly at (555) 010-2000 or frontdesk@westrocks.edu for assistance."
-    Keep answers concise, conversational, and polite.
-    
-    HANDBOOK TEXT:
+    // We moved the instructions to the BOTTOM so the AI doesn't forget them after reading the long text.
+    // We also told it to be more forgiving with the messy PDF formatting.
+    const prompt = `HANDBOOK TEXT:
     ${HANDBOOK_TEXT}
     
-    USER QUESTION:
+    -----------------
+    INSTRUCTIONS:
+    You are the friendly, helpful assistant for West Rocks Middle School. 
+    Your goal is to answer the parent or student's question based ONLY on the handbook text provided above. 
+    
+    Please note: The text above was extracted directly from a PDF, so the formatting is very messy. Tables, schedules, and calendars are broken into raw text, and some words may be squished together. Please read carefully and use your reasoning to piece together the answer from the messy data.
+    
+    If you can reasonably infer the answer from the text, provide a clear, concise, and polite response.
+    If the answer is truly NOT anywhere in the text, you MUST reply exactly with: "I couldn't find information about that in my current handbook. Please contact the main office directly at (555) 010-2000 or frontdesk@westrocks.edu for assistance."
+    
+    USER QUESTION: 
     ${userText}`;
 
     try {
