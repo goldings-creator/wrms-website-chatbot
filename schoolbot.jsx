@@ -827,61 +827,16 @@ I _______________________(student name) have received a copy of the code of cond
 Yo ______________ (nombre del estudiante) he recibido una copia del código de conducta y las expectativas de toda la escuela (vestimenta, teléfono, asistencia, etc.). También los revisé con un maestro, consejero o administrador de la escuela. 
 _________________________ ______________ ________ Student Signature Homeroom/Grade Date
 29 
-National Junior Honor Society 
-West Rocks Middle School Chapter
-
-The National Junior Honor Society (NJHS) elevates a school’s commitment to the values of scholarship, service, leadership, character, and citizenship. These five pillars have been associated with membership in the organization since its inception in 1929. 
-Today, it is estimated that more than one million students participate in NJHS activities. NJHS chapters are found in all 50 states, US Territories, and around the world. Chapter membership not only recognizes students for their accomplishments, but challenges them to develop further through active involvement in school activities and community service. 
-Everyday Pillars of NJHS 
-Scholarship Service Leadership Character Citizenship 
-Everyday Scholarship is a commitment to learning and growing on an educational path. It means making the most of the educational opportunities provided and seeking out learning, not only in school or similar settings, but also personally. Everyday Scholarship doesn’t require a minimum GPA—but it does require effort. More importantly, it 
-30 
-
-stems from a desire to contribute to this world in a positive way by building on one’s own knowledge, skills, and talent through different experiences. 
-Everyday Service is seeking out and engaging in meaningful service. It calls for a service mindset, the desire to seek opportunities to help others as well as acts of service. As Honor Society students, many young teens and young adults at local chapters are required to meet minimum service participation requirements for service. 
-Although hours are important, Everyday Service is seeing a need and fulfilling it voluntarily. Sometimes it’s driven by a passion for a specific cause or people in need. Other times, it’s driven by personal or family need, like taking care of siblings or other family members, or maybe even working part-time to help with family finances. 
-Everyday Leadership builds on Everyday Service. Service and leadership oftentimes look very similar. Everyday Leadership is carrying oneself with dignity and taking ownership and responsibility for one’s own actions and participation. Being a public speaker, playing quarterback, or having an official title is not required for Everyday Leadership. Everyday Leadership means being an agent—someone who takes action and responsibility—of your own pathway. 
-Everyday Character is valuing diverse cultures and building relationships that reflect love of self but also concern for others. There are endless attributes to good character: perseverance, respect, integrity, honesty, sacrifice—the list goes on. Good and noble character is a high calling. Oftentimes we don’t “see” character unless there is a public display of self-sacrifice, or more often, a very public mistake. Everyday Character is not about praiseworthy or blameworthy behavior but the personal commitment to ethical and compassionate decision making that affects oneself and others. 
-Everyday Citizenship is accepting one’s place and role in the community and seeking to understand the concerns and strengths of that community. Community includes but is not limited to neighborhoods, tribes, and local and regional districts. For young people in particular, Everyday Citizenship is an opportunity to be educated about and to demonstrate care for the issues that impact those who are citizens in their shared community. At NASSP, we also believe that “global citizenship” is something that binds all of us together—adults, young people, and people from different nations across borders and boundaries. 
-31
-
-32
-33
-
-34
-35
-
-36
-
-37
-
-38
-
-
-81 West Rocks Road 
-Norwalk, CT 06851 
-(203) 899 – 2970 
-Norwalk Public Schools Code of Conduct 
-West Rocks Middle School Expectations and Policies 
-Código de conducta de las escuelas públicas de Norwalk 
-Expectativas y políticas de la escuela secundaria West Rocks 
-I _______________________(student name) have received a copy of the code of conduct and school-wide expectations (dress, phone, attendance…etc.). I also reviewed them with a teacher, counselor, or administrator. 
-Yo ______________ (nombre del estudiante) he recibido una copia del código de conducta y las expectativas de toda la escuela (vestimenta, teléfono, asistencia, etc.). También los revisé con un maestro, consejero o administrador de la escuela. 
-_________________________ ______________ ________ Student Signature Homeroom/Grade Date
-29 
+  `;
 
   // --- REAL AI INTEGRATION (GOOGLE GEMINI FREE TIER) ---
   const fetchAIResponse = async (userText) => {
-    // This looks for a secret key in Vercel, or uses the one you paste here for testing.
-    const apiKey = import.meta.env.VITE_GEMINI_API_KEY || "PASTE_YOUR_API_KEY_HERE_FOR_TESTING"; 
-    
-    if (apiKey === "PASTE_YOUR_API_KEY_HERE_FOR_TESTING") {
-      return "System Error: Please add your free Google Gemini API key to the code to activate my AI brain!";
-    }
+    // Note: For this preview window to work, the key must be empty. 
+    // WHEN YOU DEPLOY TO VERCEL, change the line below back to: 
+    // const apiKey = import.meta.env.VITE_GEMINI_API_KEY;
+    const apiKey = ""; 
 
-    // We moved the instructions to the BOTTOM so the AI doesn't forget them after reading the long text.
-    // We also told it to be more forgiving with the messy PDF formatting.
-    const prompt = `HANDBOOK TEXT:
+    const systemPrompt = `HANDBOOK TEXT:
     ${HANDBOOK_TEXT}
     
     -----------------
@@ -892,24 +847,34 @@ _________________________ ______________ ________ Student Signature Homeroom/Gra
     Please note: The text above was extracted directly from a PDF, so the formatting is very messy. Tables, schedules, and calendars are broken into raw text, and some words may be squished together. Please read carefully and use your reasoning to piece together the answer from the messy data.
     
     If you can reasonably infer the answer from the text, provide a clear, concise, and polite response.
-    If the answer is truly NOT anywhere in the text, you MUST reply exactly with: "Sorry, I cannot answer your question. Please call our Main Office at 203-899-2970."
-    
-    USER QUESTION: 
-    ${userText}`;
+    If the answer is truly NOT anywhere in the text, you MUST reply exactly with: "Sorry, I cannot answer your question. Please call our Main Office at 203-899-2970."`;
 
-    try {
-      const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          contents: [{ parts: [{ text: prompt }] }]
-        })
-      });
-      const data = await response.json();
-      return data.candidates[0].content.parts[0].text;
-    } catch (error) {
-      console.error("API Error:", error);
-      return "I'm having trouble connecting to my knowledge base right now. Please try again later!";
+    const payload = {
+      systemInstruction: { parts: [{ text: systemPrompt }] },
+      contents: [{ parts: [{ text: userText }] }]
+    };
+
+    // Exponential backoff retry logic (makes the bot much more reliable)
+    const delays = [1000, 2000, 4000, 8000, 16000];
+    
+    for (let i = 0; i <= delays.length; i++) {
+      try {
+        const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload)
+        });
+        
+        if (!response.ok) throw new Error("API request failed");
+        
+        const data = await response.json();
+        return data.candidates?.[0]?.content?.parts?.[0]?.text || "Sorry, I cannot answer your question. Please call our Main Office at 203-899-2970.";
+      } catch (error) {
+        if (i === delays.length) {
+          return "Sorry, I cannot answer your question. Please call our Main Office at 203-899-2970.";
+        }
+        await new Promise(resolve => setTimeout(resolve, delays[i]));
+      }
     }
   };
 
